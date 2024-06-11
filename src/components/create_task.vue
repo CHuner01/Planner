@@ -4,6 +4,8 @@
 import task from "@/components/task.vue";
 import {router} from "@/router/index.js";
 
+
+
 export default {
     data() {
         return {
@@ -47,10 +49,7 @@ export default {
                 return response.json();
             }).then((data) => {
                 console.log(data);
-                if (data.status !== 200 && data.status !== undefined) {
-                    this.validateToken();
-                }
-                else {
+
                     this.tasks.push({
                         userId: data.userId,
                         taskId: data.taskId,
@@ -62,7 +61,7 @@ export default {
                         dueToStart: data.dueToStart,
                         dueToEnd: data.dueToEnd,
                     });
-                }
+
             });
             this.title = "";
             this.description = null;
@@ -79,19 +78,61 @@ export default {
 
 <template>
 
-    <h2>Новая задача</h2>
-    <form ref="info">
-        <input type="text" v-model="title" placeholder="Задача" />
-        <input type="text" v-model="description" placeholder="Описание" />
-        <input type="number" v-model="priority" placeholder="Приоритет" />
-        <input type="text" v-model="tag" placeholder="Тег" />
-    </form>
+    <div class="create_task container">
+        <div class="row">
+            <div class="col">
+                <div class="container">
+                    <div class="row my-2">
+                        <input class="task_title fs-3" type="text" v-model="title" placeholder="Новая задача" />
+<!--                        <textarea class="task_title fs-3" type="text" v-model="title" placeholder="Задача"></textarea>-->
+                    </div>
+                    <div class="row my-2">
+                        <input type="text" v-model="description" placeholder="Описание" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="container">
+                    <div class="row">
+                        <input type="number" v-model="priority" placeholder="Приоритет" />
+                        <input type="text" v-model="tag" placeholder="Тег" />
+                    </div>
+                    <div class="row m-1">
+                        <button @click="createTask()" :disabled="this.title.length === 0">Создать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <button @click="createTask()" :disabled="this.title.length === 0">Так пойдет</button>
 
+<!--    <form ref="info" class="new_task_form">-->
+<!--        <input type="text" v-model="title" placeholder="Задача" />-->
+<!--        <input type="text" v-model="description" placeholder="Описание" />-->
+<!--        <input type="number" v-model="priority" placeholder="Приоритет" />-->
+<!--        <input type="text" v-model="tag" placeholder="Тег" />-->
+<!--    </form>-->
 
 </template>
 
 <style scoped>
+
+.create_task {
+    border: solid;
+    border-radius: 15px;
+
+    padding: 6px ;
+
+
+    width: 50vw;
+    min-width: 250px;
+}
+
+input, textarea {
+    outline: none;
+    border: none;
+    font-weight: 500;
+}
+
 
 </style>

@@ -8,10 +8,10 @@ export default {
 </script>
 
 <template>
-
-<div id="app">
+    <!-- transstion -->
     <router-view />
-</div>
+
+
 
 </template>
 

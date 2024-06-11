@@ -1,5 +1,5 @@
 <script>
-
+//sass / scss БЭМ
 
 import {defineComponent} from "vue";
 import Create_task from "@/components/create_task.vue";
@@ -112,33 +112,79 @@ export default defineComponent({
 
 <template>
 
-    <h1>Главная страница</h1>
-    <p>Здесь пока ничего нет</p>
-    <button>Можешь нажать, но ничего не произойдет</button>
-    <button @click="$router.push({ name: 'auth'})">Выйти</button>
+    <div class="container text-center m-4">
+        <div class="row">
+            <div class="col">
+                <h1>Planner</h1>
+            </div>
+            <div class="col-2">
+                <button @click="$router.push({ name: 'auth'})">Выйти</button>
+            </div>
+        </div>
+    </div>
 
-    <create_task :tasks="this.tasks" :validateToken="this.validateToken" />
 
-    <h2>Мои задачи</h2>
+    <div class="container tasks-form">
+        <create_task :tasks="this.tasks" :validateToken="this.validateToken" />
+    </div>
 
-    <div>
-        <select v-model="filter" @change="getFilter()">
-            <option>Без фильтра</option>
-            <option>Новые</option>
-            <option>Просроченные</option>
-            <option>Выполненные</option>
-            <option>Удаленные</option>
-        </select>
+
+    <div class="container text-center m-4">
+        <div class="row">
+            <div class="col">
+                <h2>Мои задачи</h2>
+            </div>
+            <div class="col-2">
+                <select v-model="filter" @change="getFilter()">
+                    <option>Без фильтра</option>
+                    <option>Новые</option>
+                    <option>Просроченные</option>
+                    <option>Выполненные</option>
+                    <option>Удаленные</option>
+                </select>
+            </div>
+            <div class="col">
+                <h4>Тег</h4>
+            </div>
+            <div class="col">
+                <input />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                Колонка
+            </div>
+        </div>
     </div>
 
     <div v-if="tasks.length === 0">
         <p>Задач пока нет</p>
     </div>
 
-    <task v-for="(el, index) in tasks" :key="index" :task="el" :tasks="this.tasks" :index="index" />
+    <div class="container tasks-form">
+        <task v-for="(el, index) in tasks" :key="index" :task="el" :tasks="this.tasks" :index="index" />
+    </div>
+
+
+
 
 </template>
 
 <style scoped>
+
+.tasks-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 30px;
+    margin-bottom: 50px;
+
+}
 
 </style>
