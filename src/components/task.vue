@@ -9,7 +9,8 @@ export default {
             tag: this.task.tag,
             dueToStart: this.task.dueToStart,
             dueToEnd: this.task.dueToEnd,
-            form: false
+            form: false,
+            checked: false
         }
     },
     props: {
@@ -25,6 +26,9 @@ export default {
             type: Object,
             required: true
         }
+    },
+    created() {
+        this.checkCompletedTask();
     },
     methods: {
         editForm() {
@@ -66,7 +70,6 @@ export default {
                     dueToEnd: data.dueToEnd,
                 });
             });
-            // this.form = !this.form;
         },
         deleteTask() {
             this.tasks.splice(this.index, 1);
@@ -94,6 +97,93 @@ export default {
             this.dueToEnd = this.task.dueToEnd;
             // this.editForm();
         },
+        checkCompletedTask() {
+            if (this.task.status === "COMPLETED") {
+                this.checked = true;
+            }
+        },
+        checkTaskStatus() {
+            if (this.checked === true) {
+                this.completeTask();
+            }
+            if (this.checked === false) {
+                this.newTask();
+            }
+        },
+        completeTask() {
+            const access_token = localStorage.getItem('access_token');
+            fetch("http://localhost:8181/tasks", {
+                method: 'PUT',
+                headers:{
+                    'content-type': 'application/json',
+                    Authorization: `Bearer ${access_token}`
+                },
+                body: JSON.stringify({
+                    "taskId": this.task.taskId,
+                    "userId": this.task.userId,
+                    "title": this.title,
+                    "description": this.description,
+                    "status": "COMPLETED",
+                    "priority": this.priority,
+                    "tag": this.tag,
+                    "dueToStart": this.dueToStart,
+                    "dueToEnd": this.dueToEnd,
+                })
+            }).then((response) => {
+                console.log(response)
+                return response.json();
+            }).then((data) => {
+                console.log(data);
+                this.tasks[this.index] = ({
+                    userId: data.userId,
+                    taskId: data.taskId,
+                    status: data.status,
+                    title:  data.title,
+                    description: data.description,
+                    priority: data.priority,
+                    tag: data.tag,
+                    dueToStart: data.dueToStart,
+                    dueToEnd: data.dueToEnd,
+                });
+            });
+        },
+        newTask() {
+            const access_token = localStorage.getItem('access_token');
+            fetch("http://localhost:8181/tasks", {
+                method: 'PUT',
+                headers:{
+                    'content-type': 'application/json',
+                    Authorization: `Bearer ${access_token}`
+                },
+                body: JSON.stringify({
+                    "taskId": this.task.taskId,
+                    "userId": this.task.userId,
+                    "title": this.title,
+                    "description": this.description,
+                    "status": "NEW",
+                    "priority": this.priority,
+                    "tag": this.tag,
+                    "dueToStart": this.dueToStart,
+                    "dueToEnd": this.dueToEnd,
+                })
+            }).then((response) => {
+                console.log(response)
+                return response.json();
+            }).then((data) => {
+                console.log(data);
+                this.tasks[this.index] = ({
+                    userId: data.userId,
+                    taskId: data.taskId,
+                    status: data.status,
+                    title:  data.title,
+                    description: data.description,
+                    priority: data.priority,
+                    tag: data.tag,
+                    dueToStart: data.dueToStart,
+                    dueToEnd: data.dueToEnd,
+                });
+            });
+        }
     }
 }
 
@@ -105,7 +195,7 @@ export default {
         <div class="container">
             <div class="row">
                 <div class="col-1 p-1 icon-checkbox">
-                    <input class="form-check-input" type="checkbox" value="">
+                    <input @change="checkTaskStatus()" v-model="checked" class="form-check-input" type="checkbox" value="">
                 </div>
                 <div class="col px-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <div class="container">

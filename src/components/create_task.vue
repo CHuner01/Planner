@@ -15,6 +15,8 @@ export default {
             tag: null,
             dueToStart: null,
             dueToEnd: null,
+            timeStartForm: false,
+            timeEndForm: false,
         };
     },
     props: {
@@ -70,6 +72,13 @@ export default {
             this.dueToStart = null;
             this.dueToEnd = null;
         },
+        editStartTime() {
+            this.timeStartForm = !this.timeStartForm;
+            console.log(this.dueToStart)
+        },
+        editEndTime() {
+            this.timeEndForm = !this.timeEndForm;
+        }
     }
 }
 
@@ -96,6 +105,20 @@ export default {
                     <div class="row">
                         <input type="number" v-model="priority" placeholder="Приоритет" />
                         <input type="text" v-model="tag" placeholder="Тег" />
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <button @focus="editStartTime()" type="button">Вр.1</button>
+                        </div>
+                        <div class="col-6">
+                            <button @focus="editEndTime()" type="button">Вр.2</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input v-if="timeStartForm" @blur="editStartTime()" v-model="dueToStart" type="datetime-local" class="form-control">
+                        <p>{{ this.dueToStart }}</p>
+                        <input v-if="timeEndForm" @blur="editEndTime()" v-model="dueToEnd" type="datetime-local" class="form-control">
+                        <p>{{ this.dueToEnd }}</p>
                     </div>
                     <div class="row m-1">
                         <button @click="createTask()" :disabled="this.title.length === 0">Создать</button>
